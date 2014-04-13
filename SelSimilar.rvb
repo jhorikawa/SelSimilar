@@ -1,0 +1,37 @@
+Option Explicit
+'Script written by <Junichiro Horikawa>
+'Script copyrighted by <Junichiro Horikawa>
+'Script version 2011年11月17日 19:48:12
+
+Call Main()
+Sub Main()
+	Dim strLayer, strObj,arrObj,intType,strO,lngColor,lngPColor,strLineType,dblPWidth
+	Dim arrResults
+	
+	strObj = Rhino.GetObject("Select base object for selecting similar object",, True)
+	If IsNull(strObj) Then Exit Sub
+	intType = Rhino.ObjectType(strObj)
+	strLayer = Rhino.ObjectLayer(strObj)
+	lngColor = Rhino.ObjectColor(strObj)
+	lngPColor = Rhino.ObjectPrintColor(strObj)
+	strLineType = Rhino.ObjectLinetype(strObj)
+	dblPWidth = Rhino.ObjectPrintWidth(strObj)
+	
+	Rhino.EnableRedraw(False)
+	Rhino.UnselectAllObjects()
+	arrObj = Rhino.ObjectsByLayer(strLayer)
+	If Not IsArray(arrObj) Then Exit Sub
+	
+	For Each strO In arrObj
+		If Rhino.ObjectType(strO) = intType _
+			And Rhino.ObjectColor(strO) = lngCOlor _
+			And Rhino.ObjectPrintColor(strO) = lngPColor _
+			And Rhino.ObjectLinetype(strO) = strLineType _
+			And Rhino.ObjectPrintWidth(strO) = dblPWidth Then
+			Rhino.SelectObject(strO)
+		End If
+	Next
+	Rhino.EnableRedraw(True)
+	
+	
+End Sub
